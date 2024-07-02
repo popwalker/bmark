@@ -96,8 +96,12 @@ function request()
 end
 
 function response(status, header, body)
-    local status, data = pcall(json.decode, body)
-    if not status then
+    if status ~= 200 then
+        print("响应body: ", body)
+    end
+
+    local state, data = pcall(json.decode, body)
+    if not state then
         -- 处理错误，例如记录日志，返回错误信息等
         print("JSON解析响应失败:", body)
     else
