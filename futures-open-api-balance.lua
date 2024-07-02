@@ -70,8 +70,6 @@ local function generate_sign(timestamp, method, request_path, query_string, body
 end
 
 
-local token = "3df7ffb5daa02c2e744d61a829c4ec3d"
-local secret_key = "df7e43d391fad0519be9b1f0f9f691a2"
 -- local token = "67c0af11d6b8bcgf13e8bc4674dac556" -- dev
 -- local secret_key = "b62c27710ebe94cccb072c07b6015759" -- dev
 local request_path = "/futures-open-api/fapi/v1/account"
