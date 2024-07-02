@@ -71,8 +71,6 @@ end
 
 
 
--- local token = "67c01f11d6b8bcgf13e8bc4674dac556" -- test
--- local secret_key = "b62c27710ebe94g7cb072c07b6015759" -- test
 local token = "67c0af11d6b8bcgf13e8bc4674dac556" -- dev
 local secret_key = "b62c27710ebe94cccb072c07b6015759" -- dev
 local request_path = "/exchange-open-api/api/trade/orders-pending"
@@ -98,7 +96,13 @@ function request()
 end
 
 function response(status, header, body)
-    local data = json.decode(body)
+    local status, data = pcall(json.decode, body)
+    if not status then
+        -- 处理错误，例如记录日志，返回错误信息等
+        print("JSON解析响应失败:", body)
+    else
+        -- print("响应body: ", body)
+    end
 
     -- 检查是否包含你需要的字段，以预防 nil 值错误
     local code = "0"
@@ -109,11 +113,9 @@ function response(status, header, body)
     -- 使用全局变量进行计数
     counter[code] = (counter[code] or 0) + 1
 
-    print("响应body: ", json.encode(data))
-
-    for key, value in pairs(counter) do
-        print("Code " .. key .. " count: " .. value)
-    end
+    -- for key, value in pairs(counter) do
+    --     print("Code " .. key .. " count: " .. value)
+    -- end
 end
 
 function done(summary, latency, requests)

@@ -71,10 +71,10 @@ end
 
 
 
-local token = "67c0af11d6b8bcgf13e8bc4674dac556" -- dev
-local secret_key = "b62c27710ebe94cccb072c07b6015759" -- dev
-local req_body   = '{"sideType":0,"orderType":1,"symbol":"ETHUSDT","price":4000,"volume":"0.1"}'
-local request_path = "/exchange-open-api/api/trade/order"
+-- local token = "67c0af11d6b8bcgf13e8bc4674dac556" -- dev
+-- local secret_key = "b62c27710ebe94cccb072c07b6015759" -- dev
+local request_path = "/exchange-open-api/api/account/balance"
+local method = "GET"
 
 local counter = {}
 
@@ -82,14 +82,14 @@ local counter = {}
 function request()
     
     local timestamp = get_millisecond_timestamp()
-    local sign = generate_sign(timestamp, "POST", request_path, "", req_body, secret_key)
+    local sign = generate_sign(timestamp, method, request_path, "", nil, secret_key)
     local headers = {}
     headers["Content-Type"] = "application/json"
     headers["X_CH_APIKEY"] = token
     headers["X_CH_TS"] = timestamp
     headers["X_CH_SIGN"] = sign
 
-    local req = wrk.format("POST", request_path, headers, req_body)
+    local req = wrk.format(method, request_path, headers)
 
     -- 返回修改后的请求
     return req
@@ -112,8 +112,6 @@ function response(status, header, body)
 
     -- 使用全局变量进行计数
     counter[code] = (counter[code] or 0) + 1
-
-    -- print("响应body: ", json.encode(data))
 
     -- for key, value in pairs(counter) do
     --     print("Code " .. key .. " count: " .. value)
